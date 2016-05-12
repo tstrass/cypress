@@ -30,7 +30,15 @@ module Admin
     end
 
     def send_invitation
-      User.invite!(email: params[:email])
+      u = params[:user]
+      e = u[:email]
+      u = User.where(email: e).first
+      if u
+        flash[:notice] =  "A user with the email address #{e} already exists "
+      else
+        User.invite!(email: e)
+        flash[:notice] =  "An invitation has been sent to #{e}"
+      end
       redirect_to_admin
     end
 

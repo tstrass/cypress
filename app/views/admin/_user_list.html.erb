@@ -1,4 +1,21 @@
-
+<div>
+  <legend>Invite User</legend>
+  <p class="configured-banner">
+    Send and invitation to someone to register for the application.
+  </p>
+  <%= bootstrap_form_for(User.new , url: admin_users_send_invitation_path, html: { method: :post, 'data-parsley-validate': '' }) do |f| %>
+  <div class="panel-body">
+    <table><tr><td>
+    <%= f.email_field :email, autocapitalize: 'off', autocorrect: 'off', autofocus: true,
+    'data-parsley-required': '',
+    'data-parsley-type':"email",
+    'data-parsley-trigger': 'blur' %>
+  </td><td>
+     <button class="btn btn-default" >Invite User</button>
+   </td></tr></table>
+  </div>
+  <% end %>
+</div>
 <table class="table">
   <thead>
     <tr>
@@ -13,9 +30,18 @@
     <% User.excludes(id: current_user.id).order_by(email:  1).each do |user|
     role = user.roles.where({resource_id: nil}).first
     assignments = user.roles.where({resource_id: {"$ne"=> nil}})
+    invited_and_not_accepted = user.invitation_sent_at? && !user.invitation_accepted?
     %>
     <tr>
-      <td><%= user.email %></td>
+      <td><%= user.email %>
+        <% if invited_and_not_accepted %>
+         <p>
+          <strong>
+            Invitation sent
+          </strong>
+        </p>
+        <% end %>
+      </td>
       <td><%= role.name if role %></td>
       <td><a href="<%= toggle_approved_admin_user_path(user) %>" data-turbolinks-action="replace"><%= user.approved %></a></td>
       <td>
