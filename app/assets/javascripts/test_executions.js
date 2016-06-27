@@ -5,15 +5,11 @@ ready = function() {
   $("#view_execution").click(function(event) {
     window.location.href = $("#select_execution").val();
   });
-
-  $("#submit-upload").click(function(event) {
-    event.preventDefault();
-    $("#new_test_execution").submit();
-  });
   initializeTestExecutionResults();
 }
 
-$(document).on('page:change page:load', ready);
+$(document).ready(ready);
+$(document).on('page:load', ready);
 
 var initializeTestExecutionResults = function() {
   // activate the tabs

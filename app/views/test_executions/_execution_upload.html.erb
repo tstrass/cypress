@@ -16,7 +16,8 @@
   <% accept_type = 'text/xml' %>
 <% end %>
 
-<%= form_for(TestExecution.new, :html => { method: :post, :multipart => true }, url: task_test_executions_path(task)) do |f| %>
+<%= form_for(TestExecution.new, :html => { method: :post, :multipart => true }, :authenticity_token => true, remote: true, url: task_test_executions_path(task)) do |f| %>
+  <%= hidden_field_tag :partial, '/test_executions/results/execution_results_panel' %>
   <div class="fileinput fileinput-new input-group" data-provides="fileinput">
     <div class="form-control" data-trigger="fileinput">
       <i class="fa fa-fw fa-file fileinput-exists"></i>
@@ -30,3 +31,9 @@
     <a id = 'submit-upload' class="input-group-addon fileinput-exists btn btn-success"><i class="fa fa-fw fa-upload"></i> Upload</a>
   </div>
 <% end %>
+
+<script>
+  $("#submit-upload").click(function(event) {
+    $("#new_test_execution").submit();
+  });
+</script>

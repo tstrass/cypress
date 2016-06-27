@@ -38,30 +38,13 @@
           <%= index + 1 %> <i class="fa fa-fw fa-bolt" aria-hidden="true"></i> <%= step.title %>
         </h1>
       </div>
-      <div class="panel-body">
+      <div class="panel-body" id = "<%= step.partial + '_wrapper' %>">
         <%= render partial: step.partial, locals: { product_test: @product_test, task: @task } %>
       </div>
     </div>
   <% end %>
 </div>
 
-<% if @task.most_recent_execution %>
-  <div class = 'panel panel-<%= execution_status_class(@test_execution) %>' id = 'results_panel'>
-    <div class = 'panel-heading'>
-      <h1 class='panel-title'>
-        Results
-        <div class = 'pull-right'>
-          <select id="select_execution" aria-label="View test execution">
-            <% @task.test_executions.sort_by { |obj| obj.created_at }.reverse.each_with_index do |execution, i| %>
-              <option value = <%= task_test_execution_path(@task, execution) %> <%= 'selected="selected"' if execution.id == @test_execution.id %>><%= get_select_history_message(execution, i == 0) %></option>
-            <% end %>
-          </select>
-          <button id="view_execution" class="btn btn-xs btn-<%= execution_status_class(@test_execution) %>">Refresh View</button>
-        </div>
-      </h1>
-    </div>
-    <div class = 'panel-body' id = 'display_execution_results' >
-      <%= render partial: 'execution_results', locals: { execution: @test_execution } %>
-    </div>
-  </div>
-<% end %>
+<div id = 'test_execution_results_panel_wrapper'>
+  <%= render partial: '/test_executions/results/execution_results_panel', locals: { task: @task, test_execution: @test_execution } %>
+</div>

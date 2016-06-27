@@ -64,6 +64,7 @@ Scenario: Successful Upload CAT 1 Zip
   And the user views task c1
   And the user uploads a CAT 1 zip file
   Then the user should see test results
+  Then the user should not see an error message saying the upload was invalid
   Then the page should be accessible according to: section508
   Then the page should be accessible according to: wcag2aa
 
@@ -72,6 +73,17 @@ Scenario: Successful Upload CAT 3 XML
   And the user views task c2
   And the user uploads a CAT 3 XML file
   Then the user should see test results
+  Then the user should not see an error message saying the upload was invalid
+  Then the page should be accessible according to: section508
+  Then the page should be accessible according to: wcag2aa
+
+Scenario: Successful Upload CAT 1 Zip and View Passing Results
+  When the user creates a product with tasks c1
+  And the user views task c1
+  And the user uploads a CAT 1 zip file
+  And all test executions pass
+  Then the user should see passing test results
+  Then the user should not see an error message saying the upload was invalid
   Then the page should be accessible according to: section508
   Then the page should be accessible according to: wcag2aa
 

@@ -64,6 +64,13 @@ And(/^the user uploads a CAT 3 XML file$/) do
   page.find('#submit-upload').click
 end
 
+And(/^all test executions pass$/) do
+  TestExecution.all.each do |execution|
+    execution.state = :passed
+    execution.save!
+  end
+end
+
 And(/^the user uploads an invalid file$/) do
   invalid_file_path = File.join(Rails.root, 'app/assets/images/icon.svg')
   page.attach_file('results', invalid_file_path, visible: false)
@@ -112,6 +119,14 @@ end
 
 Then(/^the user should see test results$/) do
   assert_text 'Results'
+end
+
+Then(/^the user should see passing test results$/) do
+  assert_text 'Passed'
+end
+
+Then(/^the user should not see an error message saying the upload was invalid$/) do
+  assert_no_text 'Invalid file upload'
 end
 
 Then(/^the user should see an error message saying the upload was invalid$/) do

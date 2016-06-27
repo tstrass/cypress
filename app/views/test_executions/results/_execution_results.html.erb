@@ -12,7 +12,15 @@
   <p>You do not need to reload your browser. Results will automatically display when the tests are done running.</p>
   <% # ajax contacts test_execution's show controller action with format: 'js'. controller then directs to show.js.erb which will wait, then re-render %>
   <script>
-    $.ajax({url: "<%= request.env['PATH_INFO'] %>", type: "GET", dataType: 'script', data: { partial: 'execution_results' }});
+    $.ajax({
+      url: "<%= task_test_execution_path(execution.task, execution) %>",
+      type: "GET",
+      dataType: 'script',
+      data: { partial: '/test_executions/results/execution_results_panel', id: "<%= execution.id %>" },
+      success: function(data) {
+        $('#execution_upload_wrapper').html("<%= escape_javascript render partial: 'execution_upload', locals: { task: execution.task } %>");
+      }
+    });
   </script>
   
 <% when 'passing' %>

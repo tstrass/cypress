@@ -52,6 +52,10 @@ class TestExecutionsController < ApplicationController
                                   messages: ['invalid file upload. upload a zip for QRDA Category I or XML for QRDA Category III'] }] }
     respond_with(@test_execution) do |f|
       f.html { redirect_to new_task_test_execution_path(task_id: @task.id), flash: { alert: alert.html_safe } }
+      f.js do
+        flash[:alert] = alert.html_safe
+        render :show
+      end
       f.json { render :json => error_response, :status => :unprocessable_entity }
       f.xml  { render :xml => error_response[:errors].to_xml(:root => :errors, :skip_types => true), :status => :unprocessable_entity }
     end
