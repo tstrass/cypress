@@ -1,31 +1,76 @@
 <%= render partial: 'header_product', locals: { product: @product } %>
 <div class="row">
 
-  <div class = 'col-sm-8'>
-    <div class = 'panel panel-default'>
-      <div class = 'panel-heading'><h1 class = 'panel-title'>Product Status</h1></div>
-      <div class = 'panel-body'>
+  <div class = 'col-md-8'>
+    <% product_status_values = get_product_status_values(@product) %>
 
-        <table class="table styled-status-table">
-          <thead>
-            <tr>
-              <% ['C1', 'C2', 'C3', 'C4'].each do |cert_type| %>
-                <th scope="col" class='products-certification text-center'>
-                  <%= cert_type %>
-                  <br><small><%= APP_CONFIG.certifications[cert_type]['subtitle'] %></small>
-                </th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><%= render partial: 'products_status_cells', locals: { product: @product } %></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <table class="table table-condensed table-product-status">
+      <thead>
+        <tr>
+          <td></td>
+          <th scope="col" colspan="2">C1</th>
+          <th scope="col">C2</th>
+          <th scope="col" colspan="3">C3</th>
+          <th scope="col" colspan="2">C4</th>
+        </tr>
+        <tr>
+          <td></td>
+          <th scope="col"><small>Manual</small></th>
+          <th scope="col"><small>QRDA-I</small></th>
+          <th scope="col"><small>QRDA-III</small></th>
+          <th scope="col"><small>Manual</small></th>
+          <th scope="col"><small>QRDA-I</small></th>
+          <th scope="col"><small>QRDA-III</small></th>
+          <th scope="col"><small>QRDA-I</small></th>
+          <th scope="col"><small>QRDA-III</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"><i aria-hidden="true" class="fa fa-fw fa-check"></i> Passing Tests</th>
+          <% product_status_row(product_status_values, 'passing').each do |count| %>
+            <% if count > 0 %>
+              <td class="status-passing text-center"> <%= count %> </td>
+            <% else %>
+              <td></td>
+            <% end %>
+          <% end %>
+        </tr>
+        <tr>
+          <th scope="row"><i aria-hidden="true" class="fa fa-fw fa-times"></i> Failing Tests</th>
+          <% product_status_row(product_status_values, 'failing').each do |count| %>
+            <% if count > 0 %>
+              <td class="status-failing text-center"> <%= count %> </td>
+            <% else %>
+              <td></td>
+            <% end %>
+          <% end %>
+        </tr>
+        <tr>
+          <th scope="row"><i aria-hidden="true" class="fa fa-fw fa-circle-o"></i> Unstarted Tests</th>
+          <% product_status_row(product_status_values, 'not_started').each do |count| %>
+            <% if count > 0 %>
+              <td class="status-not-started text-center"> <%= count %> </td>
+            <% else %>
+              <td></td>
+            <% end %>
+          <% end %>
+        </tr>
+        <tr>
+          <th scope="row"><i aria-hidden="true" class="fa fa-fw fa-exclamation"></i> Errors</th>
+          <% product_status_row(product_status_values, 'errored').each do |count| %>
+            <% if count > 0 %>
+              <td class="status-errored text-center"> <%= count %> </td>
+            <% else %>
+              <td></td>
+            <% end %>
+          <% end %>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <div class = 'col-sm-4'>
+  <div class = 'col-md-4'>
     <% unless @product.product_tests.empty? %>
       <div class = 'panel panel-default'>
         <div class = 'panel-heading'>
@@ -37,7 +82,6 @@
       </div>
     <% end %>
   </div>
-
 </div>
 
 

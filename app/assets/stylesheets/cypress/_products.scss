@@ -11,3 +11,28 @@
   vertical-align: middle;
   line-height: 28px;
 }
+
+.table-product-status {
+  > thead > tr:nth-child(1) > th,
+  > thead > tr:nth-child(1) > tr {
+    background: $brand-primary;
+    border: 2px $brand-white solid;
+    color: $brand-white;
+    text-align: center;
+  }
+
+  > thead > tr:nth-child(2) > th,
+  > thead > tr:nth-child(2) > td {
+    border-bottom: 2px $gray-darker solid;
+    // width: 12.5%;
+    text-align: center;
+  }
+
+  > thead > tr > td {
+    border-bottom-color: $gray-lighter;
+  }
+
+  > tbody > tr > td {
+    border-top-color: $gray-lighter;
+  }
+}
