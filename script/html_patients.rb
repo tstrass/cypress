@@ -6,7 +6,7 @@ args = {}
 OptionParser.new do |opts|
   opts.banner = 'Usage: html_patients.rb [options]'
 
-  opts.on('-pPRODUCT', '--product=PRODUCT', 'Product to get patients for') do |p|
+  opts.on('-pPRODUCT', '--product=PRODUCT', 'Product ID to get patients for') do |p|
     args['product'] = p
   end
 
@@ -18,7 +18,7 @@ end.parse!
 
 # We need a product ID to get the product
 if args['product'].nil? || args['product'].empty?
-  raise new ArgumentError, 'No product supplied'
+  raise ArgumentError, 'No product ID supplied.'
 end
 
 product = Product.find(BSON::ObjectId.from_string(args['product']))
