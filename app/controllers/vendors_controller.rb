@@ -2,8 +2,8 @@ require 'api'
 
 class VendorsController < ApplicationController
   include API::Controller
-  before_action :set_vendor, only: [:show, :update, :destroy, :edit]
-  before_action :authorize_vendor, only: [:show, :update, :destroy, :edit]
+  before_action :set_vendor, only: [:show, :update, :destroy, :edit, :favorite]
+  before_action :authorize_vendor, only: [:show, :update, :destroy, :edit, :favorite]
 
   # breadcrumbs
   add_breadcrumb 'Dashboard', :vendors_path
@@ -14,6 +14,7 @@ class VendorsController < ApplicationController
   def index
     # get all of the vendors that the user can see
     @vendors = Vendor.accessible_by(current_user).order(:updated_at => :desc) # Vendor.accessible_by(current_user).all.order(:updated_at => :desc)
+    @vendors = @vendors.sort_by { |a| a.favorite ? 0 : 1 }
     respond_with(@vendors.to_a)
   end
 
@@ -68,6 +69,16 @@ class VendorsController < ApplicationController
     flash_comment(@vendor.name, 'danger', 'removed')
     respond_with(@vendor) do |f|
       f.html { redirect_to root_path }
+    end
+  end
+
+  def favorite
+    @vendor.favorite = !@vendor.favorite
+    @vendor.save!
+    @vendors = Vendor.accessible_by(current_user).order(:updated_at => :desc)
+    @vendors = @vendors.sort_by { |a| a.favorite ? 0 : 1 }
+    respond_with(@vendors.to_a) do |f|
+      f.js {}
     end
   end
 

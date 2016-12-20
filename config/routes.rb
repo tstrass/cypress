@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '500', to: 'application#server_error'
 
   resources :vendors do
+    post :favorite
     resources :products, only: [:show, :index, :new, :create, :edit, :update, :destroy] do
       member do
         get :patients
