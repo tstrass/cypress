@@ -7,7 +7,8 @@ Rails.application.routes.draw do
 
   resources :vendors do
     post :favorite
-    resources :products, only: [:show, :index, :new, :create, :edit, :update, :destroy] do
+    resources :products, only: [:show, :index, :new, :create, :edit, :update, :destroy, :favorite] do
+      post :favorite
       member do
         get :patients
         get :report
@@ -15,7 +16,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :products, only: [:show, :edit, :update, :destroy] do
+  resources :products, only: [:show, :edit, :update, :destroy, :favorite] do
+    post :favorite
     resources :product_tests, only: [:index, :show]
     resources :checklist_tests, only: [:create, :show, :update, :destroy] do
       member do

@@ -9,7 +9,7 @@ class VendorsController < ApplicationController
   add_breadcrumb 'Dashboard', :vendors_path
   add_breadcrumb 'Add Vendor', :new_vendor_path, only: [:new, :create]
 
-  respond_to :js, only: [:show]
+  respond_to :js, only: [:show, :favorite]
 
   def index
     # get all of the vendors that the user can see
@@ -20,7 +20,8 @@ class VendorsController < ApplicationController
 
   def show
     add_breadcrumb 'Vendor: ' + @vendor.name, :vendor_path
-    @products = Product.where(vendor_id: @vendor.id).order_by(state: 'desc').page(params[:page]).per(5)
+    product_arr = Product.where(vendor_id: @vendor.id).order_by(state: 'desc').sort_by { |a| a.favorite ? 0 : 1 }
+    @products = Kaminari.paginate_array(product_arr).page(params[:page]).per(5)
     respond_with(@vendor)
   end
 
