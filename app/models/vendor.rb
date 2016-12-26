@@ -17,7 +17,7 @@ class Vendor
   field :address, type: String
   field :state, type: String
   field :zip, type: String
-  field :favorite, type: Boolean
+  field :favorite_user_ids, type: Array, default: []
 
   validates :name, presence: true, uniqueness: { message: 'Vendor name was already taken. Please choose another.' }
 
