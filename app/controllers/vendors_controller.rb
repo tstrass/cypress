@@ -14,13 +14,13 @@ class VendorsController < ApplicationController
   def index
     # get all of the vendors that the user can see
     @vendors = Vendor.accessible_by(current_user).order(:updated_at => :desc) # Vendor.accessible_by(current_user).all.order(:updated_at => :desc)
-    @vendors = @vendors.sort_by { |a| a.favorite_user_ids.include? current_user.id ? 0 : 1 }
+    @vendors = @vendors.sort_by { |a| (a.favorite_user_ids.include? current_user.id) ? 0 : 1 }
     respond_with(@vendors.to_a)
   end
 
   def show
     add_breadcrumb 'Vendor: ' + @vendor.name, :vendor_path
-    product_arr = Product.where(vendor_id: @vendor.id).order_by(state: 'desc').sort_by { |a| a.favorite_user_ids.include? current_user.id ? 0 : 1 }
+    product_arr = Product.where(vendor_id: @vendor.id).order_by(state: 'desc').sort_by { |a| (a.favorite_user_ids.include? current_user.id) ? 0 : 1 }
     @products = Kaminari.paginate_array(product_arr).page(params[:page]).per(5)
     respond_with(@vendor)
   end
@@ -79,7 +79,7 @@ class VendorsController < ApplicationController
     @vendor.favorite_user_ids.push(user_id) if deleted_value.nil?
     @vendor.save!
     @vendors = Vendor.accessible_by(current_user).order(:updated_at => :desc)
-    @vendors = @vendors.sort_by { |a| a.favorite_user_ids.include? current_user.id ? 0 : 1 }
+    @vendors = @vendors.sort_by { |a| (a.favorite_user_ids.include? current_user.id) ? 0 : 1 }
     respond_with(@vendors.to_a) do |f|
       f.js {}
     end

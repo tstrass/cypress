@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
   respond_to :js, only: [:favorite]
 
   def index
-    @products = @vendor.products.sort_by { |a| a.favorite_user_ids.include? current_user.id ? 0 : 1 }
+    @products = @vendor.products.sort_by { |a| (a.favorite_user_ids.include? current_user.id) ? 0 : 1 }
     respond_with(@products.to_a)
   end
 
@@ -96,7 +96,7 @@ class ProductsController < ApplicationController
     deleted_value = @product.favorite_user_ids.delete(user_id)
     @product.favorite_user_ids.push(user_id) if deleted_value.nil?
     @product.save!
-    @products = @vendor.products.sort_by { |a| a.favorite_user_ids.include? current_user.id ? 0 : 1 }
+    @products = @vendor.products.sort_by { |a| (a.favorite_user_ids.include? current_user.id) ? 0 : 1 }
     respond_with(@products.to_a)
   end
 
