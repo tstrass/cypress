@@ -97,18 +97,19 @@ group :development, :test do
   gem 'axe-matchers'
   gem 'selenium-webdriver', '2.48.0'
   gem 'parallel_tests'
+  gem 'pry'
+  gem 'pry-nav'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-  gem 'pry'
-  gem 'pry-nav'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 end
 
 group :test do
   gem 'mocha', require: false
+  gem 'fakefs', require: 'fakefs/safe'
   gem 'factory_girl_rails'
   gem 'minitest'
   gem 'minitest-rails'
