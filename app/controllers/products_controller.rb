@@ -92,9 +92,8 @@ class ProductsController < ApplicationController
   end
 
   def favorite
-    user_id = current_user.id
-    deleted_value = @product.favorite_user_ids.delete(user_id)
-    @product.favorite_user_ids.push(user_id) if deleted_value.nil?
+    deleted_value = @product.favorite_user_ids.delete(current_user.id)
+    @product.favorite_user_ids.push(current_user.id) if deleted_value.nil?
     @product.save!
     @products = @vendor.products.sort_by { |a| (a.favorite_user_ids.include? current_user.id) ? 0 : 1 }
     respond_with(@products.to_a)
