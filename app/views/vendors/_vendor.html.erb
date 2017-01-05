@@ -4,8 +4,10 @@
     <%= button_to vendor_favorite_path(vendor), remote: true, :class => "btn btn-sm btn-default" do %>
       <% if (vendor.favorite_user_ids.include? current_user.id)  %>
         <i class="fa fa-fw fa-star" aria-hidden="true"></i>
+        <span class="sr-only">vendor favorited</span>
       <% else %>
         <i class="fa fa-fw fa-star-o" aria-hidden="true"></i>
+        <span class="sr-only">vendor not favorited</span>
       <% end %>
     <% end %>
   </td>
