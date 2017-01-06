@@ -80,9 +80,7 @@ class VendorsController < ApplicationController
     @vendor.save!
     @vendors = Vendor.accessible_by(current_user).order(:updated_at => :desc)
     @vendors = @vendors.sort_by { |a| (a.favorite_user_ids.include? current_user.id) ? 0 : 1 }
-    respond_with(@vendors.to_a) do |f|
-      f.js {}
-    end
+    respond_with(@vendors.to_a)
   end
 
   private
